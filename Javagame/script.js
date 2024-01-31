@@ -12,8 +12,30 @@ var playerdead = false;
 
 function movePlayer(direction) {
     if (!gameInProgress) return;
+    var movespeed = 20;
+    const elapsedTime = Math.floor((new Date().getTime() - startTime) / 1000);
+
+
+// Movement Speed
+    if (elapsedTime >= 10) {
+        movespeed = 30; 
+    }
+
+    if (elapsedTime >= 25) {
+        movespeed = 35; 
+    }
+
+    if (elapsedTime >= 40) {
+        movespeed = 40; 
+    }
+
+    if (elapsedTime >= 70) {
+        movespeed = 50; 
+    }
+
+    const step = movespeed; 
+
     let newLeft;
-    const step = 20; // Define the step size for each movement
 
     if (direction === 'left') {
         newLeft = Math.max(moveLeft - step, 0);
@@ -205,7 +227,32 @@ function blockGeneration() {
 
     function blockFalling() {
         var blockTop = parseInt(block.style.top) || 0; 
-        blockTop += 5;
+        var falltime = 3; // Default
+
+
+        // Speed Increase
+        if (Math.floor((new Date().getTime() - startTime) / 1000) >= 10) {
+            falltime = 5; 
+        }
+
+        if (Math.floor((new Date().getTime() - startTime) / 1000) >= 20) {
+            falltime = 6; 
+        }
+
+        if (Math.floor((new Date().getTime() - startTime) / 1000) >= 30) {
+            falltime = 8; 
+        }
+
+        if (Math.floor((new Date().getTime() - startTime) / 1000) >= 50) {
+            falltime = 10; 
+        }
+
+        if (Math.floor((new Date().getTime() - startTime) / 1000) >= 70) {
+            falltime = 15; 
+        }
+
+
+        blockTop += falltime; 
 
         block.style.top = blockTop + "px";
 
@@ -215,10 +262,11 @@ function blockGeneration() {
             blockGeneration();
         }
 
-        //collisions after each block movement
+        // Check for collisions after each block movement
         checkCollision();
     }
 }
+
 
 
 
@@ -242,3 +290,62 @@ document.addEventListener("visibilitychange", handleVisibilityChange);
 
 blockGeneration();
 startTimer();
+
+
+
+/*
+function updateTimer() {
+    if (!gameInProgress) return;
+    var currentTime = new Date().getTime();
+    var elapsedTime = currentTime - startTime;
+    var seconds = Math.floor(elapsedTime / 1000);
+    document.getElementById('timer').innerHTML = "Survived Time: <br>" + seconds + " Seconds";
+  
+    if (!playerdead) {
+      // Restart the timer when game is resumed
+      if (!startTime) {
+        startTime = currentTime;
+      }
+  
+      // Check if the tab is visible and adjust the timer accordingly
+      if (document.hidden) {
+        // Pause the timer when the tab is hidden
+        pauseTimer();
+        game.style.backgroundImage = 'url("blurred Sky.png")';
+        if (!playerdead) {
+          showContinueButton();
+        }
+        showRestartButton();
+        showCloseButton();
+      } else {
+        // Resume the timer when the tab becomes visible
+        resumeTimer();
+        game.style.backgroundImage = 'url("Sky.png")';
+        removeButtons();
+      }
+    }
+  }
+  
+  function restartGame() {
+    document.getElementById('timer').innerHTML = "Survived Time: <br>" + 0 + " Seconds";
+    startTime = new Date().getTime();
+    playerdead = false;
+    blockGeneration();
+    startTimer();
+  }
+  
+  function pauseTimer() {
+    clearInterval(timerInterval);
+    pauseTime = new Date().getTime(); // Stores the current time when pausing
+    pausedStartTime = startTime; // Save the current startTime
+  }
+  
+  // Resume the timer
+  function resumeTimer() {
+    if (!gameInProgress) return;
+    startTime = pausedStartTime; // Restore the paused startTime
+    var currentTime = new Date().getTime();
+    var elapsedTime = currentTime - pauseTime;
+    pauseTime = 0;
+    timerInterval = setInterval(updateTimer, 1000);
+  }*/

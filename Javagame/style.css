@@ -32,11 +32,11 @@
 }
 
 @keyframes jump {
-    0% { top: 550px; }
-    25% { top: 500px; }
-    50% { top: 450px; }
-    75% { top: 500px; }
-    100% { top: 550px; }
+    0% { top: 70%; }
+    25% { top: 60%; }
+    50% { top: 50%; }
+    75% { top: 60%; }
+    100% { top: 70%; }
 }
 
 .block {
